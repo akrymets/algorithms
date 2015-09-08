@@ -9,25 +9,19 @@ package union_find;
  *
  * @author Andrey
  */
-public class QuickUnion extends UnionFind{
+public class QuickUnion extends UnionFind {
 
     public QuickUnion() {
         super();
     }
 
-    private int root(int p) {
-        
-        int idx = p;
-        
-        for (int i = 0; i < this.array.length; i++) {
-        
-            if (idx == this.array[idx]) {
-                return p;
-            } else {
-                idx = this.array[p];
-            }
+    protected int root(int p) {
+        int i = p;
+
+        while (i != this.array[i]) {
+            i = this.array[i];
         }
-        return 0;
+        return i;
     }
 
     @Override

@@ -18,8 +18,8 @@ public class QuickFind extends UnionFind{
     @Override
     public void union(int p, int q) {
         for (int i = 0; i < this.array.length; i++) {
-            if (this.array[i] == p) {
-                this.array[i] = q;
+            if (this.array[i] == this.array[p]) {
+                this.array[i] = this.array[q];
             }
         }
     }
