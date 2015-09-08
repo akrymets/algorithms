@@ -9,17 +9,37 @@ package union_find;
  *
  * @author Andrey
  */
-public class QuickUnion {
-
-    int[] array = new int[10];
+public class QuickUnion extends UnionFind{
 
     public QuickUnion() {
-        for (int i = 0; i < array.length; i++) {
-            array[i] = i;
-        }
+        super();
     }
 
-    void union(int p, int q) {
+    private int root(int p) {
+        
+        int idx = p;
+        
+        for (int i = 0; i < this.array.length; i++) {
+        
+            if (idx == this.array[idx]) {
+                return p;
+            } else {
+                idx = this.array[p];
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public void union(int p, int q) {
+        int rootP = root(p);
+        int rootQ = root(q);
+        this.array[rootP] = rootQ;
+    }
+
+    @Override
+    public boolean find(int p, int q) {
+        return root(p) == root(q);
     }
 
 }

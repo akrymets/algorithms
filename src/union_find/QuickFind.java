@@ -9,16 +9,13 @@ package union_find;
  *
  * @author Andrey
  */
-public class QuickFind {
-
-    int[] array = new int[10];
+public class QuickFind extends UnionFind{
 
     public QuickFind() {
-        for (int i = 0; i < this.array.length; i++) {
-            this.array[i] = i;
-        }
+        super();
     }
 
+    @Override
     public void union(int p, int q) {
         for (int i = 0; i < this.array.length; i++) {
             if (this.array[i] == p) {
@@ -27,14 +24,9 @@ public class QuickFind {
         }
     }
 
+    @Override
     public boolean find(int p, int q) {
         return this.array[p] == this.array[q];
     }
 
-    public void showArray() {
-        for (int i = 0; i < this.array.length; i++) {
-            System.out.print(this.array[i] + " ");
-        }
-        System.out.println();
-    }
 }
