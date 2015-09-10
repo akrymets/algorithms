@@ -9,7 +9,7 @@ package union_find;
  *
  * @author Andrey
  */
-public class QuickFind extends UnionFind{
+public class QuickFind extends UnionFind {
 
     public QuickFind() {
         super();
@@ -17,8 +17,9 @@ public class QuickFind extends UnionFind{
 
     @Override
     public void union(int p, int q) {
+        int PValue = this.array[p];
         for (int i = 0; i < this.array.length; i++) {
-            if (this.array[i] == this.array[p]) {
+            if (this.array[i] == PValue) {
                 this.array[i] = this.array[q];
             }
         }
