@@ -5,7 +5,7 @@
  */
 package week1pa;
 
-import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 /**
  *
@@ -13,49 +13,77 @@ import edu.princeton.cs.algs4.*;
  */
 public class Percolation {
 
-    boolean[][] grid = null;
+    private boolean[][] grid = null;
+    private final int N;
+    int[] opened = null;
+    int[] connected = null;
+    
 
     public Percolation(int N) {
-        grid = new boolean[N][N];
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
+        if (N <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        this.N = N;
+
+        grid = new boolean[N + 1][N + 1];
+
+        for (int i = 1; i <= N; i++) {
+            for (int j = 1; j <= N; j++) {
                 grid[i][j] = false;
             }
         }
+
     }
 
     public void open(int i, int j) {
+        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
+        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
+
         if (!isOpen(i, j)) {
             grid[i][j] = true;
         }
     }
 
     public boolean isOpen(int i, int j) {
-        return (i >= 0 && i < grid.length && j >= 0 && j < grid[i].length) ? grid[i][j] : false;
+        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
+        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
+        
+        return grid[i][j];
     }
 
     public boolean isFull(int i, int j) {
-        boolean topIsOpen = (i - 1 >= 0 && j >= 0 && j < grid[i].length) ? grid[i - 1][j] : false;
-        boolean rightIsOpen = (i >= 0 && i < grid.length && j - 1 >= 0) ? grid[i][j - 1] : false;
-        boolean bottomIsOpen = (i + 1 < grid.length && j >= 0 && j < grid[i].length) ? grid[i + 1][j] : false;
-        boolean leftIsOpen = (i >= 0 && i < grid.length && j + 1 < grid[i].length) ? grid[i][j + 1] : false;
-        return topIsOpen && rightIsOpen && bottomIsOpen && leftIsOpen;
+        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
+        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
+
+        return false;
+
     }
 
     public boolean percolates() {
         return false;
     }
 
+    private int xyTo1D(int x, int y){
+        return N * (y - 1) + x; 
+    }
+    
+    private int[] xyFrom1D(int m){
+        int[] coordinates = new int[2];
+        coordinates[0] = m % N;
+        coordinates[1] = m / N + 1;
+        return coordinates;
+    }
+    
     public static void main(String[] args) {
 
-        Percolation perc = new Percolation(10);
+        Percolation percolation = new Percolation(7);
 
-        perc.open(0, 5);
-        perc.open(1, 5);
-        perc.open(0, 4);
-        perc.open(0, 6);
-
-        System.out.println(perc.isFull(0, 5));
+        int[] test = percolation.xyFrom1D(25);
+        System.out.println(test[0] + ", " + test[1]);
+        
+        System.out.println(percolation.xyTo1D(test[0], test[1]));
+        
 
     }
 
