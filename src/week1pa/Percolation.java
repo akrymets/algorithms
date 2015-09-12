@@ -17,7 +17,6 @@ public class Percolation {
     private final int N;
     int[] opened = null;
     int[] connected = null;
-    
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -37,8 +36,7 @@ public class Percolation {
     }
 
     public void open(int i, int j) {
-        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
-        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
+        checkIndexesValidity(i, j);
 
         if (!isOpen(i, j)) {
             grid[i][j] = true;
@@ -46,15 +44,12 @@ public class Percolation {
     }
 
     public boolean isOpen(int i, int j) {
-        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
-        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
-        
+
         return grid[i][j];
     }
 
     public boolean isFull(int i, int j) {
-        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
-        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
+        checkIndexesValidity(i, j);
 
         return false;
 
@@ -64,26 +59,34 @@ public class Percolation {
         return false;
     }
 
-    private int xyTo1D(int x, int y){
-        return N * (y - 1) + x; 
+    private int xyTo1D(int x, int y) {
+        return N * (y - 1) + x;
     }
-    
-    private int[] xyFrom1D(int m){
+
+    private int[] xyFrom1D(int m) {
         int[] coordinates = new int[2];
         coordinates[0] = m % N;
         coordinates[1] = m / N + 1;
         return coordinates;
     }
-    
+
+    private void checkIndexesValidity(int i, int j) {
+        if (i <= 0 || i > N) {
+            throw new IndexOutOfBoundsException("row index i out of bounds");
+        }
+        if (j <= 0 || j > N) {
+            throw new IndexOutOfBoundsException("row index j out of bounds");
+        }
+    }
+
     public static void main(String[] args) {
 
         Percolation percolation = new Percolation(7);
 
         int[] test = percolation.xyFrom1D(25);
         System.out.println(test[0] + ", " + test[1]);
-        
+
         System.out.println(percolation.xyTo1D(test[0], test[1]));
-        
 
     }
 
