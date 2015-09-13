@@ -51,7 +51,12 @@ public class Percolation {
 
         // If the site is in the first row it must be also union with the virtual 0-site;
         if (site1DIndex <= N - 1) {
-            qu.union(N, site1DIndex); // the virtual 0-site has index N in the array
+            qu.union(N * N, site1DIndex); // the virtual 0-site has index N * N in the array
+        }
+        
+        // If the site is in the last row it must be also union with the virtual end-site;
+        if (site1DIndex <= N * N - 1 && site1DIndex >= N * (N - 1)) {
+            qu.union(N * N + 1, site1DIndex); // the virtual n-site has index N * N + 1 in the array
         }
 
         int[] neighbors = getNeighbors(i, j);
@@ -76,7 +81,7 @@ public class Percolation {
 
     public boolean isFull(int i, int j) {
         checkXYValidity(i, j);
-        return qu.connected(xyTo1D(i, j), N); // the virtual 0-site has index N in the array
+        return qu.connected(xyTo1D(i, j), N * N); // the virtual 0-site has index N * N in the array
 
     }
 
