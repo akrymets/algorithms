@@ -16,16 +16,16 @@
  *
  ******************************************************************************/
 
-import java.awt.Font;
+package week1pa;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
-import week1pa.Percolation;
+import java.awt.Font;
 
 public class PercolationVisualizer {
 
     // delay in miliseconds (controls animation speed)
-    private static final int DELAY = 100;
+    private static final int DELAY = 400;
 
     // draw N-by-N percolation system
     public static void draw(Percolation perc, int N) {
@@ -63,7 +63,8 @@ public class PercolationVisualizer {
     }
 
     public static void main(String[] args) {
-        In in = new In(args[0]);      // input file
+        //In in = new In(args[0]);      // input file
+        In in = new In("data/input20.txt");      // input file
         int N = in.readInt();         // N-by-N percolation system
 
         // turn on animation mode

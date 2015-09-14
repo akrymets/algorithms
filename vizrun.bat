@@ -1,0 +1,1 @@
+java -cp build/classes;lib/algs4.jar week1pa/PercolationVisualizer data/input20.txt
