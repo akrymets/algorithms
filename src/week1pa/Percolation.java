@@ -26,7 +26,6 @@ public class Percolation {
 
         openedSites = new boolean[N * N + 1];
 
-        
         for (int i = 1; i <= N * N; i++) {
             openedSites[i] = false;
         }
@@ -47,7 +46,7 @@ public class Percolation {
 
         // Mark this site as open
         openedSites[site1DIndex] = true;
-     
+
         /*
          * If the site is in the first row it must be also united with the
          * virtual 0-site having index N * N
@@ -55,10 +54,10 @@ public class Percolation {
         if (site1DIndex <= N - 1) {
             qu.union(N * N, site1DIndex);
         }
-        
+
         /*
-         * If the site is in the last row it must be also united with
-         * the virtual end-site having index N*N+1
+         * If the site is in the last row it must be also united with the
+         * virtual end-site having index N*N+1
          */
         if (site1DIndex >= N * (N - 1) && site1DIndex <= N * N - 1) {
             qu.union(N * N + 1, site1DIndex); // the virtual n-site has index N * N + 1 in the array
@@ -71,7 +70,7 @@ public class Percolation {
                 int neighborRow = xyFrom1D(neighbors[k])[0];
                 int neighborColumn = xyFrom1D(neighbors[k])[1];
 
-            // if a neighbor site is open and is not out bounds we union it with the site we have just opened
+                // if a neighbor site is open and is not out bounds we union it with the site we have just opened
                 if (isOpen(neighborRow, neighborColumn)) {
                     qu.union(neighbors[k], site1DIndex);
                 }
@@ -90,8 +89,12 @@ public class Percolation {
 
     }
 
+    /*
+     * Percolates if virtual top and bottom sites at indexes N*N and
+     * N*N+1 are connected
+     */
     public boolean percolates() {
-        return false;
+        return qu.connected(N * N, N * N + 1);
     }
 
     private boolean connected(int s1, int s2) {
@@ -114,9 +117,11 @@ public class Percolation {
 
     /**
      * Map site's coordinates in the grid into the its array index.
-     * @param row row index
+     *
+     * @param row    row index
      * @param column column index
-     * @return Returns mapped site's number in the array or -1 if the coordinates are not valid
+     * @return Returns mapped site's number in the array or -1 if the
+     *         coordinates are not valid
      */
     private int xyTo1D(int row, int column) {
         return xyAreValid(row, column) ? N * (row - 1) + column - 1 : -1;
@@ -124,14 +129,16 @@ public class Percolation {
 
     /**
      * Map site's index in the array into its coordinates in the grid
+     *
      * @param m
-     * @return Array of two site's coordinates in the grid: xy[0] - x; xy[1] - y;
+     * @return Array of two site's coordinates in the grid: xy[0] - x; xy[1] -
+     *         y;
      */
     private int[] xyFrom1D(int m) {
         if (m < 0 || m > N * N - 1) {
             throw new IllegalArgumentException("site's id is out of bonds of array");
         }
-        
+
         int[] xy = new int[2];
         xy[0] = (m + 1) % N != 0 ? (m + 1) / N + 1 : (m + 1) / N;
         xy[1] = (m + 1) % N != 0 ? (m + 1) % N : N;
@@ -171,9 +178,7 @@ public class Percolation {
         p.open(12, 1);
         p.open(5, 4);
         p.open(16, 19);
-        
-        
-        
+
     }
 
 }

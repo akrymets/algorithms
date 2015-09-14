@@ -5,12 +5,16 @@
  */
 package week1pa;
 
+import edu.princeton.cs.algs4.QuickFindUF;
+
 /**
  *
  * @author Andrey
  */
 public class PercolationStats {
 
+    QuickFindUF qf;
+    
     /**
      * perform T independent experiments on an N-by-N grid
      * @param N
@@ -19,6 +23,7 @@ public class PercolationStats {
     public PercolationStats(int N, int T) {
         if (T <= 0 || N <= 0) throw new java.lang.IllegalArgumentException();
         
+        qf = new QuickFindUF(N);
         
         
     }
