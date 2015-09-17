@@ -6,8 +6,8 @@
 package week1pa;
 
 import edu.princeton.cs.algs4.QuickFindUF;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 /**
  *
@@ -15,111 +15,122 @@ import edu.princeton.cs.algs4.StdRandom;
  */
 public class PercolationStats {
 
-    private double[] tresholds;
+    private double[] fractionsOfOpenSites;
     QuickFindUF qf;
     Percolation p;
-    private final int T;
-    private final int N;
-    private double mean;
-    private double stddev;
-    
-    
+    private static int T;
+    private static int N;
+    private double mean = 0.0;
+    private double stddev = 0.0;
+    private double confidenceLo;
+    private double confidenceHi;
+
     /**
      * perform T independent experiments on an N-by-N grid
+     *
      * @param N
-     * @param T 
+     * @param T
      */
     public PercolationStats(int N, int T) {
-        if (T <= 0 || N <= 0) throw new java.lang.IllegalArgumentException();
-        
-        this.T = T;
-        this.N = N;
-        
-        qf = new QuickFindUF(N);
-        
-        tresholds = new double[T];
-        
-        for (double treshold : tresholds) {
-            treshold = 0.0;
+        if (T <= 0 || N <= 0) {
+            throw new java.lang.IllegalArgumentException();
         }
-        
+
+        PercolationStats.N = N;
+        PercolationStats.T = T;
+
+        fractionsOfOpenSites = new double[T];
+
+        for (double fraction : fractionsOfOpenSites) {
+            fraction = 0.0;
+        }
+
+        /*
+         * !!! Run T experiments !!!
+         */
+        runExperiments();
+
+        this.mean = mean();
+        this.stddev = stddev();
+        this.confidenceLo = confidenceLo();
+        this.confidenceHi = confidenceHi();
+
     }
 
-    /**
-     * Returns percolation treshold for a single test
-     * @return 
-     */
-    private double treshold(){
-        p = new Percolation(N);
-        
-        int openedSitesUntilPercolates = 0;
-        while (!p.percolates()){
-            openedSitesUntilPercolates++;
-            p.open(StdRandom.uniform(1, N + 1), StdRandom.uniform(1, N + 1));
-        }
-        return 1.0 * openedSitesUntilPercolates / (N * N);
-    }
-    
-    /**
-     * run T tests and fill the tresholds[] array with tresholds for each tests
-     */
-    private void runTests(){
-        for (int i = 0; i < T; i++) {
-            tresholds[i] = treshold();
+    private void runExperiments() {
+        for (int i = 0; i < PercolationStats.T; i++) {
+
+            int count = 0; // stores fraction of open sites when percolates for current experiment
+
+            p = new Percolation(N);
+
+            while (!p.percolates()) {
+                int row = StdRandom.uniform(1, PercolationStats.N + 1);
+                int column = StdRandom.uniform(1, PercolationStats.N + 1);
+                if (!p.isOpen(row, column)) {
+                    p.open(row, column);
+                    count++;
+                }
+            }
+            fractionsOfOpenSites[i] = count / Math.pow(PercolationStats.N, 2);
         }
     }
-    
+
     /**
      * sample mean of percolation threshold
-     * @return 
+     *
+     * @return
      */
     public double mean() {
-        mean = StdStats.mean(tresholds);
-        return mean;
-    }
-    
-    /**
-     * sample standard deviation of percolation threshold
-     * @return 
-     */
-    public double stddev(){
-        stddev = StdStats.stddev(tresholds);
-        return stddev;
+        return StdStats.mean(fractionsOfOpenSites);
     }
 
     /**
-     * low  endpoint of 95% confidence interval
-     * @return 
+     * sample standard deviation of percolation threshold
+     *
+     * @return
      */
-    public double confidenceLo(){
-        return mean - (1.96 * stddev / (Math.sqrt(T)));
+    public double stddev() {
+        return StdStats.stddev(fractionsOfOpenSites);
     }
-    
+
+    /**
+     * low endpoint of 95% confidence interval
+     *
+     * @return
+     */
+    public double confidenceLo() {
+        return this.mean - (1.96 * this.stddev / (Math.sqrt(PercolationStats.T)));
+    }
+
     /**
      * high endpoint of 95% confidence interval
-     * @return 
+     *
+     * @return
      */
-    public double confidenceHi(){
-        return mean + (1.96 * stddev / (Math.sqrt(T)));
+    public double confidenceHi() {
+        return mean + (1.96 * stddev / (Math.sqrt(PercolationStats.T)));
     }
-    
-    private void showTestsResults(){
-        double ciLo = confidenceLo();
-        double ciHi = confidenceHi();
-        double mean = mean();
-        double stddev = stddev();
-        
-        System.out.println(mean);
-        System.out.println(stddev);
-        System.out.println(ciLo);
-        System.out.println(ciHi);
+
+    private void printResult() {
+        System.out.println("mean\t\t\t\t= " + this.mean);
+        System.out.println("stddev\t\t\t\t= " + this.stddev);
+        System.out.println("95% confidence interval\t\t= " + this.confidenceLo + ", " + this.confidenceHi);
+        System.out.println();
     }
-    
+
     public static void main(String[] args) {
+
+        PercolationStats ps = new PercolationStats(200, 100);
+        ps.printResult();
         
-        PercolationStats ps = new PercolationStats(100, 30);
+        ps = new PercolationStats(2, 10000);
+        ps.printResult();
         
-        ps.showTestsResults();
+        ps = new PercolationStats(2, 100000);
+        ps.printResult();
+        
+
     }
-    
+
 }
