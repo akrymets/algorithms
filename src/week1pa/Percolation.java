@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author: Andrii Krymets
+ * 18.09.2015
+ * The class implements a part of the programming asignment of week1 of
+ * the "Algorithms" course on Coursera: variables and methods for percolation
+ * simulation
+ * 
+ * The class doesn't have a main method. It just provides functionality for
+ * other classes.
+ * 
  */
 package week1pa;
 
@@ -13,10 +19,14 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
  */
 public class Percolation {
 
-    private final int N;
-    private boolean[] openedSites;
-    private WeightedQuickUnionUF qu;
+    private final int N; // number of elements in the grid's dimensions
+    private boolean[] openedSites; // array for sites opened during union operation
+    private WeightedQuickUnionUF qu; // object for using UnionFind interface methods
 
+    /**
+     * Create N-by-N grid, with all sites blocked
+     * @param N 
+     */
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException();
@@ -34,6 +44,13 @@ public class Percolation {
 
     }
 
+    /**
+     * If not already opened opens a site (row, column) coordinates
+     * than checks whether this site has opened neighboars. If it does the
+     * method performs union operation with such neighbor(s)
+     * @param row
+     * @param column 
+     */
     public void open(int row, int column) {
         checkXYValidity(row, column);
 
@@ -78,6 +95,12 @@ public class Percolation {
         }
     }
 
+    /**
+     * Is site (row, column) open?
+     * @param row
+     * @param column
+     * @return 
+     */
     public boolean isOpen(int row, int column) {
         checkXYValidity(row, column);
         return openedSites[xyTo1D(row, column)];
@@ -97,10 +120,22 @@ public class Percolation {
         return qu.connected(N * N, N * N + 1);
     }
 
+    /**
+     * Checks whether two elements s1 and s2 are connected with each other
+     * @param s1
+     * @param s2
+     * @return 
+     */
     private boolean connected(int s1, int s2) {
         return qu.connected(s1, s2);
     }
 
+    /**
+     * Finds all neighbors withing the grid of site (row, column)
+     * @param row
+     * @param column
+     * @return 
+     */
     private int[] getNeighbors(int row, int column) {
         checkXYValidity(row, column);
 
@@ -116,7 +151,7 @@ public class Percolation {
     }
 
     /**
-     * Map site's coordinates in the grid into the its array index.
+     * Maps site's coordinates in the grid into 1D array index
      *
      * @param row    row index
      * @param column column index
@@ -128,7 +163,7 @@ public class Percolation {
     }
 
     /**
-     * Map site's index in the array into its coordinates in the grid
+     * Map site's index in the 1D array into its coordinates in the grid
      *
      * @param m
      * @return Array of two site's coordinates in the grid: xy[0] - x; xy[1] -
@@ -145,14 +180,30 @@ public class Percolation {
         return xy;
     }
 
-    private boolean coordinateIsValid(int axis) {
-        return axis > 0 && axis <= N;
+    /**
+     * Checks whether site's coordinate is valid
+     * @param coordinate
+     * @return 
+     */
+    private boolean coordinateIsValid(int coordinate) {
+        return coordinate > 0 && coordinate <= N;
     }
 
+    /**
+     * Checks whether both site's coordinates are valid (the site's inside the grid of N * N)
+     * @param row
+     * @param column
+     * @return 
+     */
     private boolean xyAreValid(int row, int column) {
         return coordinateIsValid(row) && coordinateIsValid(column);
     }
 
+    /**
+     * Throws IndexOutOfBoundsException exception if site's out of the grid
+     * @param row
+     * @param column 
+     */
     private void checkXYValidity(int row, int column) {
         if (!coordinateIsValid(row)) {
             throw new IndexOutOfBoundsException("row index x out of bounds");
@@ -160,25 +211,6 @@ public class Percolation {
         if (!coordinateIsValid(column)) {
             throw new IndexOutOfBoundsException("column index y out of bounds");
         }
-    }
-
-    /*
-     * For testing of implemented methods
-     */
-    public static void main(String[] args) {
-
-        Percolation p = new Percolation(20);
-
-        p.open(7, 11);
-        p.open(18, 11);
-        p.open(12, 5);
-        p.open(9, 5);
-        p.open(5, 9);
-        p.open(1, 1);
-        p.open(12, 1);
-        p.open(5, 4);
-        p.open(16, 19);
-
     }
 
 }

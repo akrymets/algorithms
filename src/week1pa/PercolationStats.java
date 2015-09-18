@@ -1,29 +1,32 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author: Andrii Krymets
+ * 18.09.2015
+ * The class implements a part of the programming asignment of week1 of
+ * the "Algorithms" course on Coursera: getting statistics of percolation
+ * simulations for different input parameters
+ * 
+ * To run the program you have to input the following parameters:
+ * N - number of elements in the grid's dimensions
+ * T - number of tests
+ * 
+ * Example:
+ * project_root> java -cp /build/classes;lib/algs4.jar week1pa.PercolationStats 100 200
  */
 package week1pa;
 
-import edu.princeton.cs.algs4.QuickFindUF;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
-/**
- *
- * @author Andrey
- */
 public class PercolationStats {
 
-    private double[] fractionsOfOpenSites;
-    QuickFindUF qf;
-    Percolation p;
-    private static int T;
-    private static int N;
-    private double mean = 0.0;
-    private double stddev = 0.0;
-    private double confidenceLo;
-    private double confidenceHi;
+    private double[] fractionsOfOpenSites; // number of open sites fractions for each of T experiments
+    Percolation p; // Percolation class implements some needed methods for performing UnionFind operations
+    private static int T; // number of experiments
+    private static int N; // number of elements in the grid's dimensions
+    private double mean = 0.0; // sample mean of percolation threshold
+    private double stddev = 0.0; // sample standard deviation of percolation threshold
+    private double confidenceLo; // low  endpoint of 95% confidence interval
+    private double confidenceHi; //high endpoint of 95% confidence interval
 
     /**
      * perform T independent experiments on an N-by-N grid
@@ -45,9 +48,6 @@ public class PercolationStats {
             fraction = 0.0;
         }
 
-        /*
-         * !!! Run T experiments !!!
-         */
         runExperiments();
 
         this.mean = mean();
@@ -57,6 +57,9 @@ public class PercolationStats {
 
     }
 
+    /**
+     * Method runs T experiments and fills the fractionsOfOpenSites array
+     */
     private void runExperiments() {
         for (int i = 0; i < PercolationStats.T; i++) {
 
@@ -77,7 +80,7 @@ public class PercolationStats {
     }
 
     /**
-     * sample mean of percolation threshold
+     * Calculates sample mean of percolation threshold
      *
      * @return
      */
@@ -86,7 +89,7 @@ public class PercolationStats {
     }
 
     /**
-     * sample standard deviation of percolation threshold
+     * Calculates sample standard deviation of percolation threshold
      *
      * @return
      */
@@ -95,7 +98,7 @@ public class PercolationStats {
     }
 
     /**
-     * low endpoint of 95% confidence interval
+     * Calculates low endpoint of 95% confidence interval
      *
      * @return
      */
@@ -104,7 +107,7 @@ public class PercolationStats {
     }
 
     /**
-     * high endpoint of 95% confidence interval
+     * Calculates high endpoint of 95% confidence interval
      *
      * @return
      */
@@ -112,6 +115,9 @@ public class PercolationStats {
         return mean + (1.96 * stddev / (Math.sqrt(PercolationStats.T)));
     }
 
+    /**
+     * Just a test method for calculation results demonstration
+     */
     private void printResult() {
         System.out.println("mean\t\t\t\t= " + this.mean);
         System.out.println("stddev\t\t\t\t= " + this.stddev);
@@ -121,15 +127,8 @@ public class PercolationStats {
 
     public static void main(String[] args) {
 
-        PercolationStats ps = new PercolationStats(200, 100);
+        PercolationStats ps = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         ps.printResult();
-        
-        ps = new PercolationStats(2, 10000);
-        ps.printResult();
-        
-        ps = new PercolationStats(2, 100000);
-        ps.printResult();
-        
 
     }
 
