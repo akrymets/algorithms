@@ -1,3 +1,5 @@
+package week1pa;
+
 /*
  * @author: Andrii Krymets
  * 18.09.2015

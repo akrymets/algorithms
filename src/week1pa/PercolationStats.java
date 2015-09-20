@@ -1,3 +1,5 @@
+package week1pa;
+
 /*
  * @author: Andrii Krymets
  * 18.09.2015
@@ -12,7 +14,7 @@
  * Example:
  * java -cp /build/classes;lib/algs4.jar week1pa.PercolationStats 100 200
  */
-
+import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
@@ -21,23 +23,21 @@ public class PercolationStats {
     // number of open sites fractions for each of T experiments
     private double[] fractionsOfOpenSites;
 
-    /*
-     * Percolation class implements some needed methods for performing UnionFind
-     * operations
-     */
+    // Percolation class implements some needed methods for performing UnionFind
+    // operations
     private Percolation p;
 
     // number of experiments
-    private int t;
+    private final int T;
 
     // number of elements in the grid's dimensions
-    private int n;
+    private final int N;
 
     // sample mean of percolation threshold
-    private double mean = 0.0;
+    private double mean;
 
     // sample standard deviation of percolation threshold
-    private double stddev = 0.0;
+    private double stddev;
 
     // low  endpoint of 95% confidence interval
     private double confidenceLo;
@@ -56,8 +56,8 @@ public class PercolationStats {
             throw new java.lang.IllegalArgumentException();
         }
 
-        this.n = N;
-        this.t = T;
+        this.N = N;
+        this.T = T;
 
         fractionsOfOpenSites = new double[T];
 
@@ -69,7 +69,7 @@ public class PercolationStats {
      * Method runs T experiments and fills the fractionsOfOpenSites array
      */
     private void runExperiments() {
-        for (int i = 0; i < this.t; i++) {
+        for (int i = 0; i < this.T; i++) {
 
             /*
              * stores fraction of open sites when percolates for current
@@ -77,17 +77,20 @@ public class PercolationStats {
              */
             int count = 0;
 
-            p = new Percolation(n);
+            p = new Percolation(N);
 
             while (!p.percolates()) {
-                int row = StdRandom.uniform(1, this.n + 1);
-                int column = StdRandom.uniform(1, this.n + 1);
+                int row = StdRandom.uniform(1, this.N + 1);
+                int column = StdRandom.uniform(1, this.N + 1);
                 if (!p.isOpen(row, column)) {
                     p.open(row, column);
                     count++;
                 }
             }
-            fractionsOfOpenSites[i] = count / (this.n * this.n);
+            // don't forget that N and count are integers! In order to get
+            // correct division we must convert at least one of them into
+            // double
+            fractionsOfOpenSites[i] = 1.0 * count / (this.N * this.N);
         }
 
         this.mean = mean();
@@ -120,7 +123,7 @@ public class PercolationStats {
      * @return
      */
     public double confidenceLo() {
-        return mean - (1.96 * stddev / (Math.sqrt(this.t)));
+        return mean - (1.96 * stddev / (Math.sqrt(this.T)));
     }
 
     /**
@@ -129,28 +132,33 @@ public class PercolationStats {
      * @return
      */
     public double confidenceHi() {
-        return mean + (1.96 * stddev / (Math.sqrt(this.t)));
+        return mean + (1.96 * stddev / (Math.sqrt(this.T)));
     }
 
     /**
      * Just a test method for calculation results demonstration
      */
     private void printResult() {
-        System.out.println("mean\t\t\t\t= " + this.mean);
-        System.out.println("stddev\t\t\t\t= " + this.stddev);
-        System.out.println("95% confidence interval\t\t= " + this.confidenceLo
+        StdOut.println("mean\t\t\t\t= " + this.mean);
+        StdOut.println("stddev\t\t\t\t= " + this.stddev);
+        StdOut.println("95% confidence interval\t\t= " + this.confidenceLo
                 + ", " + this.confidenceHi);
-        System.out.println();
+        StdOut.println();
     }
 
     public static void main(String[] args) {
+
+        if (args.length == 0) {
+            args = new String[2];
+            args[0] = "200";
+            args[1] = "100";
+        }
 
         PercolationStats ps = new PercolationStats(
                 Integer.parseInt(args[0]),
                 Integer.parseInt(args[1]));
 
         ps.printResult();
-
     }
 
 }
