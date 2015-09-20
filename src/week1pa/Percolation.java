@@ -1,5 +1,8 @@
 package week1pa;
 
+// fixing a bug
+// bug is fixed
+
 /*
  * @author: Andrii Krymets
  * 18.09.2015
