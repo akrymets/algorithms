@@ -1,6 +1,7 @@
 package week1pa;
 
 // this is test comment for week1paprod branch
+// editing here ....
 
 /*
  * @author: Andrii Krymets
@@ -35,6 +36,8 @@ public class Percolation {
      * Create N-by-N grid, with all sites blocked
      * @param N 
      */
+    
+    // editing here .....
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException();
