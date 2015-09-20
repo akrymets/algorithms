@@ -10,13 +10,27 @@ import java.util.Iterator;
 /**
  *
  * @author Andrey
+ * @param <Item>
  */
 public class Deque<Item> implements Iterable<Item> {
 
+    // Storing size of the deque
+    private int dequeSize;
+    
+    // reference to the first node in the data structure
+    private Node firstNode;
+    
+    // reference to the last node in the data structure
+    private Node lastNode;
+    
+    
     /**
      * construct an empty deque
      */
     public Deque() {
+        dequeSize = 0;
+        firstNode = null;
+        lastNode = null;
     }
 
     /**
@@ -25,7 +39,7 @@ public class Deque<Item> implements Iterable<Item> {
      * @return
      */
     public boolean isEmpty() {
-        return false;
+        return dequeSize == 0;
     }
 
     /**
@@ -33,7 +47,7 @@ public class Deque<Item> implements Iterable<Item> {
      * @return the number of items on the deque
      */
     public int size() {
-        return 0;
+        return dequeSize;
     }
 
     /**
@@ -46,6 +60,17 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.lang.NullPointerException();
         }
 
+        Node newNode = new Node(item);
+        newNode.nextNode = firstNode;
+        firstNode = newNode;
+
+        // if it's the first node in the data structure then it's
+        // also the last node
+        if (isEmpty()) {
+            lastNode = newNode;
+        }
+        
+        dequeSize++;
     }
 
     /**
@@ -58,6 +83,8 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.lang.NullPointerException();
         }
 
+        
+        dequeSize++;
     }
 
     /**
@@ -71,6 +98,7 @@ public class Deque<Item> implements Iterable<Item> {
         }
         
         
+        dequeSize--;
         
         return null;
     }
@@ -87,6 +115,8 @@ public class Deque<Item> implements Iterable<Item> {
         
         
         
+        dequeSize--;
+        
         return null;
     }
 
@@ -99,7 +129,20 @@ public class Deque<Item> implements Iterable<Item> {
         return null;
     }
 
-   
+    /**
+     * Node of linkled items list structure
+     */
+    private class Node{
+        Node nextNode;
+        Item item;
+        
+        Node(Item item){
+            this.item = item;
+        }
+        
+    }
+    
+    
     
     /**
      * unit testing
@@ -108,6 +151,8 @@ public class Deque<Item> implements Iterable<Item> {
      */
     public static void main(String[] args) {
 
+
+        
     }
 
 }
