@@ -16,14 +16,13 @@ public class Deque<Item> implements Iterable<Item> {
 
     // Storing size of the deque
     private int dequeSize;
-    
+
     // reference to the first node in the data structure
     private Node firstNode;
-    
+
     // reference to the last node in the data structure
     private Node lastNode;
-    
-    
+
     /**
      * construct an empty deque
      */
@@ -61,15 +60,23 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
         Node newNode = new Node(item);
-        newNode.nextNode = firstNode;
-        firstNode = newNode;
+
+        if (isEmpty()) {
+            newNode.nextNode = null;
+            newNode.previousNode = null;
+            firstNode = newNode;
+        } else {
+            newNode.nextNode = firstNode;
+            firstNode.previousNode = newNode;
+            firstNode = newNode;
+        }
 
         // if it's the first node in the data structure then it's
         // also the last node
         if (isEmpty()) {
             lastNode = newNode;
         }
-        
+
         dequeSize++;
     }
 
@@ -83,7 +90,12 @@ public class Deque<Item> implements Iterable<Item> {
             throw new java.lang.NullPointerException();
         }
 
-        
+        Node newNode = new Node(item);
+
+        lastNode.nextNode = newNode;
+        newNode.previousNode = lastNode;
+        lastNode = newNode;
+
         dequeSize++;
     }
 
@@ -96,11 +108,14 @@ public class Deque<Item> implements Iterable<Item> {
         if (isEmpty()) {
             throw new java.util.NoSuchElementException();
         }
-        
-        
+
+        Node secondNode = firstNode.nextNode;
+        firstNode.nextNode = null; // avoiding loitering
+        firstNode = secondNode;
+
         dequeSize--;
-        
-        return null;
+
+        return firstNode.item;
     }
 
     /**
@@ -112,12 +127,14 @@ public class Deque<Item> implements Iterable<Item> {
         if (isEmpty()) {
             throw new java.util.NoSuchElementException();
         }
-        
-        
-        
+
+        Node preLastNode = lastNode.previousNode;
+        lastNode.previousNode = null;
+        lastNode = preLastNode;
+
         dequeSize--;
-        
-        return null;
+
+        return lastNode.item;
     }
 
     /**
@@ -125,25 +142,51 @@ public class Deque<Item> implements Iterable<Item> {
      *
      * @return
      */
+    @Override
     public Iterator<Item> iterator() {
-        return null;
+        return new ListIterator();
     }
 
     /**
      * Node of linkled items list structure
      */
-    private class Node{
+    private class Node {
+
+        Node previousNode;
         Node nextNode;
         Item item;
-        
-        Node(Item item){
+
+        Node(Item item) {
             this.item = item;
         }
-        
+
     }
-    
-    
-    
+
+    /**
+     * Iterator class for the Deque data structure
+     */
+    private class ListIterator implements Iterator<Item> {
+
+        private Node currentNode = firstNode;
+
+        @Override
+        public boolean hasNext() {
+            return currentNode != null;
+        }
+
+        @Override
+        public Item next() {
+            if (hasNext()) {
+                Item item = currentNode.item;
+                currentNode = currentNode.nextNode;
+                return item;
+            } else {
+                return null;
+            }
+        }
+
+    }
+
     /**
      * unit testing
      *
@@ -151,8 +194,17 @@ public class Deque<Item> implements Iterable<Item> {
      */
     public static void main(String[] args) {
 
+        Deque<String> d = new Deque<>();
 
-        
+        d.addFirst("b");
+        d.addLast("c");
+        d.addFirst("e");
+        d.removeLast();
+
+        for (String s : d) {
+            System.out.println(s);
+        }
+
     }
 
 }
