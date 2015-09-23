@@ -16,7 +16,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 /**
  *
- * @author andriikrymets
+ * @author Andrii Krymets
  */
 public class Percolation {
 

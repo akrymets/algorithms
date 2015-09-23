@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author: Andrii Krymets
+ * 23.09.2015
+ * The class is an implementation of deque (double-ended queue) data
+ * structure and methods.
+ * 
  */
 package week2pa;
 
@@ -202,10 +204,14 @@ public class Deque<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
-            Item item = currentNode.item;
-            currentNode = currentNode.nextNode;
-            return item;
-
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException("there are no more"
+                        + " elements in the deque");
+            } else {
+                Item item = currentNode.item;
+                currentNode = currentNode.nextNode;
+                return item;
+            }
         }
 
     }
