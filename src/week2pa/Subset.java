@@ -16,34 +16,22 @@ public class Subset {
     public static void main(String[] args) {
         
         int k;
-        int n;
         
-        if (args.length > 0) {
-            k = Integer.parseInt(args[0]);
-            n = Integer.parseInt(args[1]);
-            
-            if (k > n) {
-                throw new IllegalArgumentException("k should be less than n");
-            }
-            
-        } else {
+        if (args.length == 0) {
+            //throw new IllegalArgumentException("waiting for k");
             k = 3;
-            n = 8;
+        } else {    
+            k = Integer.parseInt(args[0]);
         }
         
         RandomizedQueue<String> rq = new RandomizedQueue<>();
-                
-        for (int i = 0; i < n; i++) {
+            
+        String str = StdIn.readString();
+        
+        while (!"end".equals(str)) {
             rq.enqueue(StdIn.readString());
+            str = StdIn.readString();
         }
-        
-        StdOut.print("% echo ");
-        
-        for (String s : rq) {
-            StdOut.print(s + " ");
-        }
-        
-        StdOut.println("| java Subset " + k);
         
         for (int i = 0; i < k; i++) {
             StdOut.println(rq.dequeue());

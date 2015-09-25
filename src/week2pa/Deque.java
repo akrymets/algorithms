@@ -5,6 +5,7 @@
  * structure and methods.
  * 
  */
+
 package week2pa;
 
 import java.util.Iterator;
