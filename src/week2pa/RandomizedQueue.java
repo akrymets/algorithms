@@ -7,7 +7,6 @@
  */
 package week2pa;
 
-import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 
@@ -98,11 +97,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         for (int j = i; j < n - 1; j++) {
             s[j] = s[j + 1];
         }
-        
+
         s[n - 1] = null;
 
         n--; // decreasing number of elements in the queue
-        
+
         // resizing the queue if needed
         if (n > 0 && n == s.length / 4) {
             resize(s.length / 2);
@@ -148,25 +147,30 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      */
     private class QueueIterator<Item> implements Iterator<Item> {
 
-        private int k; // changing key to an Item
+        private int k;
 
-        public QueueIterator() {
+        QueueIterator() {
             this.k = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return s[this.k] != null;
+            return this.k > s.length - 1;
         }
 
         @Override
         public Item next() {
             if (!hasNext()) {
-                throw new java.util.NoSuchElementException("there are no next"
-                        + " element in the queue");
+                throw new java.util.NoSuchElementException("no next element");
             }
 
-            return (Item) s[this.k++]; //??? why does it need type cast here?
+            Item item = (Item) s[this.k];
+
+            if (this.k < n) {
+                this.k++;
+            }
+
+            return item;
         }
 
     }
@@ -184,16 +188,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         rq.enqueue("b");
         rq.enqueue("c");
         rq.enqueue("d");
-        rq.enqueue("e");
-        rq.enqueue("f");
-        rq.enqueue("g");
-        rq.enqueue("h");
-        StdOut.println(rq.dequeue());
-        StdOut.println(rq.dequeue());
-        StdOut.println(rq.dequeue());
-        StdOut.println(rq.dequeue());
-        StdOut.println(rq.dequeue());
 
+        for (String s : rq) {
+            System.out.println(s);
+        }
 
     }
 

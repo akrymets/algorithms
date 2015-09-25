@@ -21,6 +21,11 @@ public class Subset {
         if (args.length > 0) {
             k = Integer.parseInt(args[0]);
             n = Integer.parseInt(args[1]);
+            
+            if (k > n) {
+                throw new IllegalArgumentException("k should be less than n");
+            }
+            
         } else {
             k = 3;
             n = 8;
@@ -32,11 +37,13 @@ public class Subset {
             rq.enqueue(StdIn.readString());
         }
         
+        StdOut.print("% echo ");
+        
         for (String s : rq) {
             StdOut.print(s + " ");
         }
         
-        StdOut.println();
+        StdOut.println("| java Subset " + k);
         
         for (int i = 0; i < k; i++) {
             StdOut.println(rq.dequeue());
