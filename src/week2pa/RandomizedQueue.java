@@ -7,7 +7,8 @@
  */
 package week2pa;
 
-import edu.princeton.cs.algs4.Stopwatch;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 
 /**
@@ -88,9 +89,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException("the queue is empty");
         }
 
-        Item item = s[--n];
-        s[n] = null; // avoiding loitering
+        int i = StdRandom.uniform(0, n - 1);
 
+        Item item = s[i]; // selecting uniformely random item
+
+        // moving all elements right from i to n in 1 position to the left
+        // in order to get rid of null value inside the queue
+        for (int j = i; j < n - 1; j++) {
+            s[j] = s[j + 1];
+        }
+        
+        s[n - 1] = null;
+
+        n--; // decreasing number of elements in the queue
+        
+        // resizing the queue if needed
         if (n > 0 && n == s.length / 4) {
             resize(s.length / 2);
         }
@@ -108,9 +121,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException("the queue is empty");
         }
 
-        int itemKey = n;
+        // selecting uniformely random item's index
+        int i = StdRandom.uniform(0, n - 1);
 
-        return s[--itemKey];
+        return s[i];
     }
 
     private void display() {
@@ -124,22 +138,22 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
      * return an independent iterator over items in random order
      */
     public Iterator<Item> iterator() {
-        //To change body of generated methods, choose Tools | Template
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new QueueIterator<>();
     }
 
     /**
      * class of iterator for randomized queue
-     * @param <Item> 
+     *
+     * @param <Item>
      */
-    private class QueueIterator<Item> implements Iterator<Item>{
+    private class QueueIterator<Item> implements Iterator<Item> {
 
         private int k; // changing key to an Item
 
-        public QueueIterator(int key) {
+        public QueueIterator() {
             this.k = 0;
         }
-        
+
         @Override
         public boolean hasNext() {
             return s[this.k] != null;
@@ -151,12 +165,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
                 throw new java.util.NoSuchElementException("there are no next"
                         + " element in the queue");
             }
-            
+
             return (Item) s[this.k++]; //??? why does it need type cast here?
         }
-        
+
     }
-    
+
     /**
      * unit testing
      *
@@ -165,17 +179,21 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public static void main(String[] args) {
 
         RandomizedQueue<String> rq = new RandomizedQueue<>();
-        Stopwatch sw = new Stopwatch();
 
-        rq.enqueue("awerewtrwetwert");
-        rq.enqueue("brewtrwetrweyyteujhgnfcgxbvsdfgvb");
-        rq.enqueue("cfdsgjfsdgjiosdfgjiofdsjgoisdfgjoisdfg");
-        rq.enqueue("dfsaghkjfdsghksdjfl;hskld;fghlakshdfao[ghaoighadsio");
-        rq.dequeue();
-        rq.dequeue();
-        rq.dequeue();
+        rq.enqueue("a");
+        rq.enqueue("b");
+        rq.enqueue("c");
+        rq.enqueue("d");
+        rq.enqueue("e");
+        rq.enqueue("f");
+        rq.enqueue("g");
+        rq.enqueue("h");
+        StdOut.println(rq.dequeue());
+        StdOut.println(rq.dequeue());
+        StdOut.println(rq.dequeue());
+        StdOut.println(rq.dequeue());
+        StdOut.println(rq.dequeue());
 
-        rq.display();
 
     }
 
