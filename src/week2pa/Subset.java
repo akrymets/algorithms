@@ -1,8 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @author: Andrii Krymets
+ * 27.09.2015
+ * The class tests methods from RandomizedQueue class.
+ * 
  */
+
 package week2pa;
 
 import edu.princeton.cs.algs4.StdIn;
@@ -14,6 +16,8 @@ import edu.princeton.cs.algs4.StdOut;
  */
 public class Subset {
     public static void main(String[] args) {
+
+        RandomizedQueue<String> rq = new RandomizedQueue<>();
         
         int k;
         
@@ -23,21 +27,16 @@ public class Subset {
         } else {    
             k = Integer.parseInt(args[0]);
         }
-        
-        RandomizedQueue<String> rq = new RandomizedQueue<>();
-            
-        String str = StdIn.readString();
-        
-        while (!"end".equals(str)) {
-            rq.enqueue(StdIn.readString());
-            str = StdIn.readString();
+
+        String[] strings = StdIn.readAllStrings();
+
+        for (String string : strings) {
+            rq.enqueue(string);
         }
         
         for (int i = 0; i < k; i++) {
             StdOut.println(rq.dequeue());
         }
-        
-        
         
     }
 }

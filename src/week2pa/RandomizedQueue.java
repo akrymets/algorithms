@@ -1,6 +1,6 @@
 /*
  * @author: Andrii Krymets
- * 23.09.2015
+ * 27.09.2015
  * The class is an implementation of randomized queue data
  * structure and methods.
  * 
@@ -166,33 +166,4 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             return (Item) s[k++];
         }
     }
-
-    /**
-     * unit testing
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
-        
-        for (int i = 0; i < 100; i++) {
-            rq.enqueue(StdRandom.uniform(100));
-        }
-        
-        for (int i = 0; i < 50; i++) {
-            rq.dequeue();
-        }
-        
-        int it = 0;
-        for (Integer k : rq) {
-            it++;
-        }
-        
-        System.out.println("iterator contains " + it + " entries");
-       
-        
-
-    }
-
 }

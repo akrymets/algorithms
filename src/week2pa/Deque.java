@@ -1,6 +1,6 @@
 /*
  * @author: Andrii Krymets
- * 23.09.2015
+ * 27.09.2015
  * The class is an implementation of deque (double-ended queue) data
  * structure and methods.
  * 
@@ -216,25 +216,4 @@ public class Deque<Item> implements Iterable<Item> {
         }
 
     }
-
-    /**
-     * unit testing
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        Deque<String> d = new Deque<>();
-
-        d.addFirst("a");
-        d.removeFirst();
-        d.removeLast();
-
-        for (String s : d) {
-            System.out.print(s + " ");
-        }
-        System.out.println();
-
-    }
-
 }
