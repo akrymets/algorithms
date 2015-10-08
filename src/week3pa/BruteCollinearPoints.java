@@ -15,7 +15,7 @@ import java.util.Arrays;
 public class BruteCollinearPoints {
 
     private LineSegment[] lines;
-    private int numberOfSegments;
+    private int numberOfSegments = 0;
 
     /**
      * finds all line segments containing 4 points
@@ -24,28 +24,27 @@ public class BruteCollinearPoints {
      */
     public BruteCollinearPoints(Point[] points) {
         
-        numberOfSegments = 0;
-        lines = new LineSegment[points.length];
+        lines = new LineSegment[points.length * points.length];
         double s2, s3, s4;
-        Point p = null; // a line's first endpoint
-        Point q = null; // the line's second endpoint
+        Point p; // a line's first endpoint
+        Point q; // the line's second endpoint
         
         
         for (int i = 0; i < points.length; i++) {
             p = points[i];
             q = points[i];
-            for (int j = i; j < points.length; j++) {
+            for (int j = i + 1; j < points.length; j++) {
                 s2 = points[j].slopeTo(points[i]);
                 p = lessPoint(p, points[j]);
                 q = higherPoint(q, points[j]);
-                for (int k = j; k < points.length; k++) {
+                for (int k = j + 1; k < points.length; k++) {
                     s3 = points[k].slopeTo(points[i]);
-                    p = lessPoint(p, points[k]);
-                    q = higherPoint(q, points[k]);
                     if (Double.compare(s2, s3) != 0) {
                         break;
                     } else {
-                        for (int l = k; l < points.length; l++) {
+                        p = lessPoint(p, points[k]);
+                        q = higherPoint(q, points[k]);
+                        for (int l = k + 1; l < points.length; l++) {
                             s4 = points[l].slopeTo(points[i]);
                             if (Double.compare(s4, s2) != 0) {
                                 break;
