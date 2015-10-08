@@ -20,7 +20,7 @@ public class SampleClient {
         String var;
         
         if (args.length == 0) {
-            var = "data/week3data/input3.txt";
+            var = "data/week3data/input40.txt";
         } else {
             var = args[0];
         }
