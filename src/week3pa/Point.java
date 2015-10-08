@@ -91,10 +91,11 @@ public class Point implements Comparable<Point> {
      *
      * @param that the other point
      * @return the value <tt>0</tt> if this point is equal to the argument point
-     *         (x0 = x1 and y0 = y1); a negative integer if this point is less
-     *         than the argument point; and a positive integer if this point is
-     *         greater than the argument point
+     * (x0 = x1 and y0 = y1); a negative integer if this point is less than the
+     * argument point; and a positive integer if this point is greater than the
+     * argument point
      */
+    @Override
     public int compareTo(Point that) {
         if (this.y == that.y && this.x == that.x) {
             return 0;
@@ -114,10 +115,15 @@ public class Point implements Comparable<Point> {
      * @return the Comparator that defines this ordering on points
      */
     public Comparator<Point> slopeOrder() {
-        /*
-         * YOUR CODE HERE
-         */
-        return null;
+        return new PointsComparator();
+    }
+
+    private static class PointsComparator implements Comparator<Point> {
+
+        @Override
+        public int compare(Point p1, Point p2) {
+            return p1.compareTo(p2);
+        }
     }
 
     /**
@@ -127,6 +133,7 @@ public class Point implements Comparable<Point> {
      *
      * @return a string representation of this point
      */
+    @Override
     public String toString() {
         /*
          * DO NOT MODIFY
